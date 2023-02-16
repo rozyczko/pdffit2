@@ -75,6 +75,7 @@ jobs:
         TARGET: pypi/pdffit2/
       run: cp ${{ env.SOURCE }} ${{ env.TARGET }}
     - name: Push
+      shell: bash
       env:
         REPO_PATH: pypi
         GIT_USERNAME: action
