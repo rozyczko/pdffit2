@@ -1,0 +1,91 @@
+name: build and upload
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      max-parallel: 4
+      matrix:
+        # python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    # runs-on: windows-latest
+    steps:
+    - name: Check-out repository
+      uses: actions/checkout@v2
+
+    - name: set up conda
+      uses: s-weigand/setup-conda@v1
+      with:
+        update-conda: true
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        conda install -c conda-forge twine
+        conda install -c conda-forge wheel
+        conda install -c conda-forge setuptools
+        conda install -c conda-forge pip
+        conda install -c conda-forge gsl
+
+    - name: Build wheels
+      run: |
+        python setup.py sdist bdist_wheel
+
+    - name: Run tests
+      run: |
+        conda install -c conda-forge numpy
+        python setup.py install
+        python conda-recipe/run_test.py
+
+    # - uses: actions/upload-artifact@v2
+    #   with:
+    #     name: diffpy2-${{ matrix.os }}-${{ matrix.python-version }}
+    #     path: ${{ github.workspace }}/dist/*.whl
+
+    - name: Upload Artifacts GitHub releases
+      uses: ncipollo/release-action@v1
+      with:
+        draft: false
+        prerelease: true
+        allowUpdates: true
+        replacesArtifacts: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: ${{ github.workspace }}/dist/*.whl
+        tag: 1.4.0
+        body: This is an alpha build of the pdffit2 library (1.4.0)
+
+    - name: Checkout target repo
+      uses: actions/checkout@v3
+      env:
+        REPO: easyScience/pypi
+        REPO_PATH: pypi
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.ES_TOKEN }}
+        repository: ${{ env.REPO }}
+        path: ${{ env.REPO_PATH }}
+        ref: "pdffit"  # temporarily, switch branch from master
+    - name: Copy index to new repo
+      env:
+        SOURCE: index.html
+        TARGET: pypi/pdffit2/
+      run: cp ${{ env.SOURCE }} ${{ env.TARGET }}
+    - name: Push
+      env:
+        REPO_PATH: pypi
+        GIT_USERNAME: action
+        GIT_EMAIL: action@github.com
+      run: |
+        cd ${{ env.REPO_PATH }}
+        git config --local user.name "${{ env.GIT_USERNAME }}"
+        git config --local user.email "${{ env.GIT_EMAIL }}"
+        git add .
+        if [[ `git status --porcelain` ]]; then
+          git commit -m "Github Actions Automatically Built in `date +"%Y-%m-%d %H:%M"`"
+          git push
+        fi
+  #       fi
