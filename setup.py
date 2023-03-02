@@ -212,7 +212,7 @@ setup_args = dict(
     include_package_data = True,
     install_requires = [
         'six',
-        'diffpy.structure>=3',
+        'diffpy.structure==0.0.0',
     ],
     zip_safe = False,
 

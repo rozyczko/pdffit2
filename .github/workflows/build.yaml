@@ -28,6 +28,8 @@ jobs:
         conda install -c conda-forge setuptools
         conda install -c conda-forge pip
         conda install -c conda-forge gsl
+        conda install -c conda-forge pycifrw
+        pip install "diffpy.structure==0.0.0" --index-url https://easyscience.github.io/pypi
 
     - name: Build wheels
       run: |
