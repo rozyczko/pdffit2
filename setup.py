@@ -169,10 +169,9 @@ elif compiler_type == "msvc":
     library_bins = gcfg['library_bins']
     gsl_dll = glob.glob(os.path.join(library_bins[0], 'gsl*.dll'))[0]
     cblas_dll = glob.glob(os.path.join(library_bins[0], 'libcblas*.dll'))[0]
-    gsl_dll_local = "gsl.dll"
+    gsl_dll_local = os.path.basename(gsl_dll)
     cblas_dll_local = os.path.basename(cblas_dll)
     # copy files so they are in the same directory as the extension
-    # Note: gsl-xx.dll needs to be moved to gsl.dll, since the .pyd expects that.
     shutil.copy(gsl_dll, gsl_dll_local)
     shutil.copy(cblas_dll, cblas_dll_local)
     data_files = [('', [gsl_dll_local]), ('', [cblas_dll_local])]
