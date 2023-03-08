@@ -225,7 +225,7 @@ setup_args = dict(
     data_files = data_files,
     install_requires = [
         'six',
-        'diffpy.structure>=3',
+        'diffpy.structure==0.0.0',
     ],
     zip_safe = False,
 

@@ -28,6 +28,8 @@ jobs:
         conda install -c conda-forge setuptools
         conda install -c conda-forge pip
         conda install -c conda-forge gsl
+        conda install -c conda-forge pycifrw
+        pip install "diffpy.structure==0.0.0" --index-url https://easyscience.github.io/pypi
 
     - name: Build wheels
       run: |
@@ -61,24 +63,24 @@ jobs:
         token: ${{ secrets.ES_TOKEN }}
         repository: ${{ env.REPO }}
         path: ${{ env.REPO_PATH }}
-        ref: "pdffit"  # temporarily, switch branch from master
-    - name: Copy index to new repo
-      env:
-        SOURCE: index.html
-        TARGET: pypi/pdffit2/
-      run: cp ${{ env.SOURCE }} ${{ env.TARGET }}
-    - name: Push
-      shell: bash
-      env:
-        REPO_PATH: pypi
-        GIT_USERNAME: action
-        GIT_EMAIL: action@github.com
-      run: |
-        cd ${{ env.REPO_PATH }}
-        git config --local user.name "${{ env.GIT_USERNAME }}"
-        git config --local user.email "${{ env.GIT_EMAIL }}"
-        git add .
-        if [[ `git status --porcelain` ]]; then
-          git commit -m "Github Actions Automatically Built in `date +"%Y-%m-%d %H:%M"`"
-          git push
-        fi
+        ref: "master"  # temporarily, switch branch from master
+    # - name: Copy index to new repo
+    #   env:
+    #     SOURCE: index.html
+    #     TARGET: pypi/diffpy-pdffit2/
+    #   run: cp ${{ env.SOURCE }} ${{ env.TARGET }}
+    # - name: Push
+    #   shell: bash
+    #   env:
+    #     REPO_PATH: pypi
+    #     GIT_USERNAME: action
+    #     GIT_EMAIL: action@github.com
+    #   run: |
+    #     cd ${{ env.REPO_PATH }}
+    #     git config --local user.name "${{ env.GIT_USERNAME }}"
+    #     git config --local user.email "${{ env.GIT_EMAIL }}"
+    #     git add .
+    #     if [[ `git status --porcelain` ]]; then
+    #       git commit -m "Github Actions Automatically Built in `date +"%Y-%m-%d %H:%M"`"
+    #       git push
+    #     fi
