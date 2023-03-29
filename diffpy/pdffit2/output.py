@@ -22,7 +22,7 @@ The output file is stored in local module variable stdout.
 
 from sys import stdout as stdout
 # silence pyflakes checker
-assert stdout
+# assert stdout
 
 
 def redirect_stdout(dst):
