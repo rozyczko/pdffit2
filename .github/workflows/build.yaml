@@ -51,8 +51,8 @@ jobs:
         replacesArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ github.workspace }}/dist/*.whl
-        tag: 1.4.0
-        body: This is an alpha build of the pdffit2 library (1.4.0)
+        tag: 0.0.0
+        body: This is an alpha build of the pdffit2 library (0.0.0)
 
     - name: Checkout target repo
       uses: actions/checkout@v4

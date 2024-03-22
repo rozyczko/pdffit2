@@ -20,7 +20,7 @@ from setuptools import Extension
 
 # Use this version when git data are not available, like in git zip archive.
 # Update when tagging a new release.
-FALLBACK_VERSION = '1.4.0'
+FALLBACK_VERSION = '0.0.0'
 
 # determine if we run with Python 3.
 PY3 = (sys.version_info[0] == 3)
@@ -62,12 +62,12 @@ def getversioncfg():
         if mx:
             g['version'] = mx.group(1)
     # then try to obtain version data from git.
-    gitdir = os.path.join(MYDIR, '.git')
-    if os.path.exists(gitdir) or 'GIT_DIR' in os.environ:
-        try:
-            g = gitinfo()
-        except OSError:
-            pass
+    #gitdir = os.path.join(MYDIR, '.git')
+    # if os.path.exists(gitdir) or 'GIT_DIR' in os.environ:
+    #     try:
+    #         g = gitinfo()
+    #     except OSError:
+    #         pass
     # finally, check and update the active version file
     cp = RawConfigParser()
     cp.read(versioncfgfile)
