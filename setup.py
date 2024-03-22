@@ -8,8 +8,10 @@ Packages:   diffpy.pdffit2
 Scripts:    pdffit2
 """
 
+import glob
 import os
 import re
+import shutil
 import sys
 import warnings
 
@@ -131,9 +133,10 @@ def get_gsl_config_win():
     conda_prefix = os.environ['CONDA_PREFIX']
     inc = os.path.join(conda_prefix, 'Library', 'include')
     lib = os.path.join(conda_prefix, 'Library', 'lib')
-    rv = {'include_dirs': [], 'library_dirs': []}
+    rv = {'include_dirs': [], 'library_dirs': [], 'library_bins': []}
     rv['include_dirs'] += [inc]
     rv['library_dirs'] += [lib]
+    rv['library_bins'] += [os.path.join(conda_prefix, 'Library', 'bin')]
     return rv
 
 # ----------------------------------------------------------------------------
@@ -157,13 +160,21 @@ if compiler_type in ("unix", "cygwin", "mingw32"):
     extra_compile_args = ['-std=c++11', '-Wall', '-Wno-write-strings',
                           '-O3', '-funroll-loops', '-ffast-math']
     extra_objects += ((p + '/libgsl.a') for p in gcfg['library_dirs'])
+    data_files = []
 elif compiler_type == "msvc":
     define_macros += [('_USE_MATH_DEFINES', None)]
     extra_compile_args = ['/EHs']
     libraries += ['gsl']
     library_dirs += gcfg['library_dirs']
-# add optimization flags for other compilers if needed
-
+    library_bins = gcfg['library_bins']
+    gsl_dll = glob.glob(os.path.join(library_bins[0], 'gsl*.dll'))[0]
+    cblas_dll = glob.glob(os.path.join(library_bins[0], 'libcblas*.dll'))[0]
+    gsl_dll_local = os.path.basename(gsl_dll)
+    cblas_dll_local = os.path.basename(cblas_dll)
+    # copy files so they are in the same directory as the extension
+    shutil.copy(gsl_dll, gsl_dll_local)
+    shutil.copy(cblas_dll, cblas_dll_local)
+    data_files = [('', [gsl_dll_local]), ('', [cblas_dll_local])]
 
 # define extension here
 pdffit2module = Extension('diffpy.pdffit2.pdffit2', [
@@ -210,6 +221,7 @@ setup_args = dict(
     test_suite = 'diffpy.pdffit2.tests',
     ext_modules = [pdffit2module],
     include_package_data = True,
+    data_files = data_files,
     install_requires = [
         'six',
         'diffpy.structure==0.0.0',
