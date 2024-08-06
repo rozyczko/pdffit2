@@ -28,11 +28,12 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: ${{ matrix.python-version }}
-        activate-environment: base
+        activate-environment: pdffit
 
 
     - name: Install dependencies
       run: |
+        conda activate pdffit
         conda install -c conda-forge twine
         conda install -c conda-forge wheel
         conda install -c conda-forge setuptools
