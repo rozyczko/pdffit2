@@ -7,7 +7,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ['3.9', '3.10', '3.11']
+        # python-version: ['3.9', '3.10', '3.11']
+        python-version: ['3.11']
         # os: [ubuntu-latest, macos-latest, windows-latest]
         os: [macos-latest]
 
@@ -35,7 +36,6 @@ jobs:
       run: |
         conda install -c conda-forge twine
         conda install -c conda-forge wheel
-        conda install -c conda-forge setuptools
         conda install -c conda-forge pip
         conda install -c conda-forge gsl
         conda install -c conda-forge pycifrw
