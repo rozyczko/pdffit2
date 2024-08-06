@@ -33,8 +33,6 @@ jobs:
 
     - name: Install dependencies
       run: |
-        conda init bash
-        conda activate pdffit
         conda install -c conda-forge twine
         conda install -c conda-forge wheel
         conda install -c conda-forge setuptools
