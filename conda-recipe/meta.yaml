@@ -28,7 +28,7 @@ requirements:
     - python
     - setuptools
     - six
-    - diffpy.structure
+    - diffpy.structure >=3
 
 test:
   # Python imports
