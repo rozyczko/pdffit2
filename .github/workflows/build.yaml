@@ -24,22 +24,21 @@ jobs:
         update-conda: true
         python-version: ${{ matrix.python-version }}
 
-    # - name: set up conda on macos
-    #   if: runner.os == 'macOS'
-    #   uses: conda-incubator/setup-miniconda@v3
-    #   with:
-    #     python-version: ${{ matrix.python-version }}
-    #     activate-environment: pdffit
-    #     channels: conda-forge
-
-    - name: Install micromamba
-      uses: mamba-org/setup-micromamba@v1
+    - name: set up conda on macos
+      if: runner.os == 'macOS'
+      uses: conda-incubator/setup-miniconda@v3
       with:
-          environment-name: pdffit
-          cache-environment: true
-          create-args: >-
-            python=3.11
-            conda-build
+        python-version: ${{ matrix.python-version }}
+        channels: conda-forge
+
+    # - name: Install micromamba
+    #   uses: mamba-org/setup-micromamba@v1
+    #   with:
+    #       environment-name: pdffit
+    #       cache-environment: true
+    #       create-args: >-
+    #         python=3.11
+    #         conda-build
    
     - name: Install dependencies
       run: |
@@ -51,6 +50,7 @@ jobs:
 
     - name: Build wheels
       run: |
+        conda info
         conda list
         conda env list
         echo $CONDA_DEFAULT_ENV
