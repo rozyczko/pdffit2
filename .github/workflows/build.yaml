@@ -36,9 +36,10 @@ jobs:
       uses: mamba-org/setup-micromamba@v1
       with:
           environment-name: pdffit
+          cache-environment: true
           create-args: >-
+            python=3.11
             conda-build
-            boa
    
     - name: Install dependencies
       run: |
