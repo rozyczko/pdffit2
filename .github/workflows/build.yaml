@@ -56,27 +56,15 @@ jobs:
         python setup.py install
         python conda-recipe/run_test.py
 
-    # - name: Upload Artifacts GitHub releases
-    #   uses: ncipollo/release-action@v1
-    #   with:
-    #     draft: false
-    #     prerelease: true
-    #     allowUpdates: true
-    #     replacesArtifacts: true
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     artifacts: ${{ github.workspace }}/dist/*.whl
-    #     tag: 0.0.1
-    #     body: This is an alpha build of the pdffit2 library (0.0.1)
-
-    # - name: Checkout target repo
-    #   uses: actions/checkout@v4
-    #   env:
-    #     REPO: easyScience/pypi
-    #     REPO_PATH: pypi
-    #   with:
-    #     fetch-depth: 0
-    #     token: ${{ secrets.ES_TOKEN }}
-    #     repository: ${{ env.REPO }}
-    #     path: ${{ env.REPO_PATH }}
-    #     ref: "master"  # temporarily, switch branch from master
+    - name: Upload Artifacts GitHub releases
+      uses: ncipollo/release-action@v1
+      with:
+        draft: false
+        prerelease: true
+        allowUpdates: true
+        replacesArtifacts: true
+        token: ${{ secrets.GH_TOKEN }}
+        artifacts: ${{ github.workspace }}/dist/*.whl
+        tag: 0.0.1
+        body: This is an alpha build of the pdffit2 library (0.0.1)
 
