@@ -48,6 +48,8 @@ jobs:
       run: |
         conda list
         conda env list
+        echo $CONDA_DEFAULT_ENV
+        conda activate pdffit
         python setup.py sdist bdist_wheel
 
     - name: Run tests
