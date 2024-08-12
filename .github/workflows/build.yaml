@@ -39,7 +39,7 @@ jobs:
           create-args: >-
             conda-build
             boa
-      - run: conda mambabuild --channel conda-forge --no-anaconda-upload --override-channels --output-folder conda/package conda
+    - run: conda mambabuild --channel conda-forge --no-anaconda-upload --override-channels --output-folder conda/package conda
 
 
     - name: Install dependencies
