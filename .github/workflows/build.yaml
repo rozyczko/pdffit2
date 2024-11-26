@@ -39,6 +39,7 @@ jobs:
         pip install pycifrw
         pip install six
         pip install diffpy.structure
+        pip install setuptools
 
     - name: Build wheels
       run: |
